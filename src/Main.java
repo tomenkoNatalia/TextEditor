@@ -29,14 +29,6 @@ public class Main {
 
     enum UndoActionType {
         UNDO, REDO};
-
-//	private boolean startPosPlusBullet
-
-//	private boolean startPosPlusNum;
-
-    private static final String MAIN_TITLE = "Текстовий редактор - ";
-    private static final String DEFAULT_FONT_FAMILY = "SansSerif";
-    private static final int DEFAULT_FONT_SIZE = 18;
     private static final List<String> FONT_LIST = Arrays
             .asList("Arial", "Bell MT", "Calibri", "Courier New","Georgia",
                     "Helevetica", "Lucida Sans", "MS Gothic", "Times New Roman", "Verdana");
@@ -48,7 +40,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        UIManager.put("TextPane.font", new Font(DEFAULT_FONT_FAMILY, Font.PLAIN, DEFAULT_FONT_SIZE));
+        UIManager.put("TextPane.font", new Font("Arial", Font.PLAIN, 14));
         UIManager.setLookAndFeel(new NimbusLookAndFeel());
 
         SwingUtilities.invokeLater(new Runnable() {
@@ -205,7 +197,7 @@ public class Main {
 
     private void setFrameTitleWithExtn(String titleExtn) {
 
-        frame.setTitle(MAIN_TITLE + titleExtn);
+        frame.setTitle("Текстовий редактор - " + titleExtn);
     }
 
     private StyledDocument getNewDocument() {
