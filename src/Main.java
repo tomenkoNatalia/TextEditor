@@ -10,9 +10,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.border.LineBorder;
 import javax.swing.undo.UndoManager;
 import javax.swing.event.*;
-import java.util.List;
-import java.util.Vector;
-import java.util.Arrays;
 import java.util.Random;
 import java.io.*;
 
@@ -27,16 +24,7 @@ public class Main {
     private String pictureButtonName;
     private File file;
 
-    enum UndoActionType {
-        UNDO, REDO};
-    private static final List<String> FONT_LIST = Arrays
-            .asList("Arial", "Bell MT", "Calibri", "Courier New","Georgia",
-                    "Helevetica", "Lucida Sans", "MS Gothic", "Times New Roman", "Verdana");
-    private static final String[] FONT_SIZES = { "Розмір шрифту", "12", "14", "16", "18", "20", "22", "24", "26", "28",
-            "30", "36", "48", "72" };
-    private static final String[] TEXT_ALIGNMENTS = { "вирівнювання", "вліво", "посередині", "вправо"};
-    private static final String ELEM = AbstractDocument.ElementNameAttribute;
-    private static final String COMP = StyleConstants.ComponentElementName;
+    enum UndoActionType {UNDO, REDO};
 
     public static void main(String[] args) throws Exception {
 
@@ -62,7 +50,7 @@ public class Main {
     private void createAndShowGUI() {
 
         frame = new JFrame();
-        setFrameTitleWithExtn("новий файл");
+        setFrameTitleWithExtn("unsaved file");
         editor = new JTextPane();
         JScrollPane editorScrollPane = new JScrollPane(editor);
         editor.setDocument(getNewDocument());
@@ -74,59 +62,59 @@ public class Main {
         Color btnColor = new Color(235, 204, 113);
 
         JButton cutButton = new JButton(new CutAction());
-        setButton(cutButton, "вирізати", btnColor, editButtonListener);
+        setButton(cutButton, "cut", btnColor, editButtonListener);
 
         JButton copyButton = new JButton(new CopyAction());
-        setButton(copyButton, "копіювати", btnColor, editButtonListener);
+        setButton(copyButton, "copy", btnColor, editButtonListener);
 
         JButton pasteButton = new JButton(new PasteAction());
-        setButton(pasteButton, "вставити", btnColor, editButtonListener);
+        setButton(pasteButton, "paste", btnColor, editButtonListener);
 
         JButton boldButton = new JButton(new BoldAction());
-        setButton(boldButton, "жирний", btnColor, editButtonListener);
+        setButton(boldButton, "bold", btnColor, editButtonListener);
 
         JButton italicButton = new JButton(new ItalicAction());
-        setButton(italicButton, "курсив", btnColor, editButtonListener);
+        setButton(italicButton, "italic", btnColor, editButtonListener);
 
         JButton underlineButton = new JButton(new UnderlineAction());
-        setButton(underlineButton, "підкреслення", btnColor, editButtonListener);
+        setButton(underlineButton, "underline", btnColor, editButtonListener);
 
-        JButton colorButton = new JButton("колір");
+        JButton colorButton = new JButton("text color");
         colorButton.setBackground(btnColor);
         colorButton.addActionListener(new ColorActionListener());
 
-        textAlignComboBox = new JComboBox<String>(TEXT_ALIGNMENTS);
+        textAlignComboBox = new JComboBox<String>(new String[]{"text alignment", "вліво", "посередині", "вправо"});
         textAlignComboBox.setBackground(btnColor);
         textAlignComboBox.setEditable(false);
         textAlignComboBox.addItemListener(new TextAlignItemListener());
         textAlignComboBox.setBackground(Color.ORANGE);
 
-        fontSizeComboBox = new JComboBox<String>(FONT_SIZES);
+        fontSizeComboBox = new JComboBox<String>(new String[]{"font size", "12", "14", "16", "18", "20", "22", "24", "26", "28",
+                "30", "36", "48", "72"});
         fontSizeComboBox.setEditable(false);
         fontSizeComboBox.addItemListener(new FontSizeItemListener());
         fontSizeComboBox.setBackground(Color.ORANGE);
 
-        Vector<String> editorFonts = getEditorFonts();
-        editorFonts.add(0, "шрифт");
-        fontFamilyComboBox = new JComboBox<String>(editorFonts);
+        fontFamilyComboBox = new JComboBox<String>(new String[]{"font family", "Arial", "Bell MT", "Calibri", "Courier New","Georgia",
+                "Helevetica", "Lucida Sans", "MS Gothic", "Times New Roman", "Verdana"});
         fontFamilyComboBox.setBackground(btnColor);
         fontFamilyComboBox.setEditable(false);
         fontFamilyComboBox.addItemListener(new FontFamilyItemListener());
         fontFamilyComboBox.setBackground(Color.ORANGE);
 
-        JButton insertPictureButton = new JButton("вставити картинку");
+        JButton insertPictureButton = new JButton("insert picture");
         insertPictureButton.addActionListener(new PictureInsertActionListener());
         insertPictureButton.setBackground(btnColor);
 
-        JButton deletePictureButton = new JButton("видалити картинку");
+        JButton deletePictureButton = new JButton("delete picture");
         deletePictureButton.setBackground(btnColor);
         deletePictureButton.addActionListener(new PictureDeleteActionListener());
 
-        JButton undoButton = new JButton("назад");
+        JButton undoButton = new JButton("<<");
         undoButton.addActionListener(new UndoActionListener(UndoActionType.UNDO));
         undoButton.setBackground(btnColor);
 
-        JButton redoButton = new JButton("вперед");
+        JButton redoButton = new JButton(">>");
         redoButton.addActionListener(new UndoActionListener(UndoActionType.REDO));
         redoButton.setBackground(btnColor);
 
@@ -170,19 +158,19 @@ public class Main {
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(Color.ORANGE);
-        JMenu fileMenu = new JMenu("МЕНЮ");
+        JMenu fileMenu = new JMenu("Menu");
         fileMenu.setMnemonic(KeyEvent.VK_F);
 
-        JMenuItem newItem = new JMenuItem("новий файл");
+        JMenuItem newItem = new JMenuItem("New File");
         newItem.setMnemonic(KeyEvent.VK_N);
         newItem.addActionListener(new NewFileListener());
-        JMenuItem openItem = new JMenuItem("відкрити");
+        JMenuItem openItem = new JMenuItem("Open");
         openItem.setMnemonic(KeyEvent.VK_O);
         openItem.addActionListener(new OpenFileListener());
-        JMenuItem saveItem = new JMenuItem("зберегти");
+        JMenuItem saveItem = new JMenuItem("Save");
         saveItem.setMnemonic(KeyEvent.VK_S);
         saveItem.addActionListener(new SaveFileListener());
-        JMenuItem exitItem = new JMenuItem("закрити");
+        JMenuItem exitItem = new JMenuItem("Close");
         exitItem.setMnemonic(KeyEvent.VK_X);
         exitItem.addActionListener(new ActionListener() {
             @Override
@@ -212,7 +200,7 @@ public class Main {
 
     private void setFrameTitleWithExtn(String titleExtn) {
 
-        frame.setTitle("Текстовий редактор - " + titleExtn);
+        frame.setTitle("Text Editor ~ " + titleExtn);
     }
 
     private StyledDocument getNewDocument() {
@@ -220,22 +208,6 @@ public class Main {
         StyledDocument doc = new DefaultStyledDocument();
         doc.addUndoableEditListener(new UndoEditListener());
         return doc;
-    }
-
-    private Vector<String> getEditorFonts() {
-
-        String[] availableFonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-        Vector<String> returnList = new Vector<>();
-
-        for (String font : availableFonts) {
-
-            if (FONT_LIST.contains(font)) {
-
-                returnList.add(font);
-            }
-        }
-
-        return returnList;
     }
 
     private class EditButtonActionListener implements ActionListener {
@@ -445,7 +417,7 @@ public class Main {
 
                 AttributeSet attrs = element.getAttributes();
 
-                if (attrs.containsAttribute(ELEM, COMP)) {
+                if (attrs.containsAttribute(AbstractDocument.ElementNameAttribute, StyleConstants.ComponentElementName)) {
 
                     JButton button = (JButton) StyleConstants.getComponent(attrs);
 
@@ -550,7 +522,7 @@ public class Main {
 
                 AttributeSet attrs = element.getAttributes();
 
-                if (attrs.containsAttribute(ELEM, COMP)) {
+                if (attrs.containsAttribute(AbstractDocument.ElementNameAttribute, StyleConstants.ComponentElementName)) {
 
                     JButton picButton = (JButton) StyleConstants.getComponent(attrs);
                     picButton.addFocusListener(new PictureFocusListener());
