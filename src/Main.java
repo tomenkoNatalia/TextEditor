@@ -53,74 +53,87 @@ public class Main {
         });
     }
 
+    private void setButton(JButton button, String label, Color color, EditButtonActionListener e){
+        button.setHideActionText(true);
+        button.setText(label);
+        button.setBackground(color);
+        button.addActionListener(e);
+    }
     private void createAndShowGUI() {
 
         frame = new JFrame();
         setFrameTitleWithExtn("новий файл");
         editor = new JTextPane();
         JScrollPane editorScrollPane = new JScrollPane(editor);
-
         editor.setDocument(getNewDocument());
 
 
         undoMgr = new UndoManager();
-        EditButtonActionListener editButtonActionListener = new EditButtonActionListener();
+        EditButtonActionListener editButtonListener = new EditButtonActionListener();
+
+        Color btnColor = new Color(235, 204, 113);
 
         JButton cutButton = new JButton(new CutAction());
-        cutButton.setHideActionText(true);
-        cutButton.setText("вирізати");
-        cutButton.addActionListener(editButtonActionListener);
+        setButton(cutButton, "вирізати", btnColor, editButtonListener);
+
         JButton copyButton = new JButton(new CopyAction());
-        copyButton.setHideActionText(true);
-        copyButton.setText("копіювати");
-        copyButton.addActionListener(editButtonActionListener);
+        setButton(copyButton, "копіювати", btnColor, editButtonListener);
+
         JButton pasteButton = new JButton(new PasteAction());
-        pasteButton.setHideActionText(true);
-        pasteButton.setText("вставити");
-        pasteButton.addActionListener(editButtonActionListener);
+        setButton(pasteButton, "вставити", btnColor, editButtonListener);
 
         JButton boldButton = new JButton(new BoldAction());
-        boldButton.setHideActionText(true);
-        boldButton.setText("жирний");
-        boldButton.addActionListener(editButtonActionListener);
+        setButton(boldButton, "жирний", btnColor, editButtonListener);
+
         JButton italicButton = new JButton(new ItalicAction());
-        italicButton.setHideActionText(true);
-        italicButton.setText("курсив");
-        italicButton.addActionListener(editButtonActionListener);
+        setButton(italicButton, "курсив", btnColor, editButtonListener);
+
         JButton underlineButton = new JButton(new UnderlineAction());
-        underlineButton.setHideActionText(true);
-        underlineButton.setText("підкреслення");
-        underlineButton.addActionListener(editButtonActionListener);
+        setButton(underlineButton, "підкреслення", btnColor, editButtonListener);
 
         JButton colorButton = new JButton("колір");
+        colorButton.setBackground(btnColor);
         colorButton.addActionListener(new ColorActionListener());
 
         textAlignComboBox = new JComboBox<String>(TEXT_ALIGNMENTS);
+        textAlignComboBox.setBackground(btnColor);
         textAlignComboBox.setEditable(false);
         textAlignComboBox.addItemListener(new TextAlignItemListener());
+        textAlignComboBox.setBackground(Color.ORANGE);
 
         fontSizeComboBox = new JComboBox<String>(FONT_SIZES);
         fontSizeComboBox.setEditable(false);
         fontSizeComboBox.addItemListener(new FontSizeItemListener());
+        fontSizeComboBox.setBackground(Color.ORANGE);
 
         Vector<String> editorFonts = getEditorFonts();
         editorFonts.add(0, "шрифт");
         fontFamilyComboBox = new JComboBox<String>(editorFonts);
+        fontFamilyComboBox.setBackground(btnColor);
         fontFamilyComboBox.setEditable(false);
         fontFamilyComboBox.addItemListener(new FontFamilyItemListener());
+        fontFamilyComboBox.setBackground(Color.ORANGE);
 
         JButton insertPictureButton = new JButton("вставити картинку");
         insertPictureButton.addActionListener(new PictureInsertActionListener());
+        insertPictureButton.setBackground(btnColor);
+
         JButton deletePictureButton = new JButton("видалити картинку");
+        deletePictureButton.setBackground(btnColor);
         deletePictureButton.addActionListener(new PictureDeleteActionListener());
 
         JButton undoButton = new JButton("назад");
         undoButton.addActionListener(new UndoActionListener(UndoActionType.UNDO));
+        undoButton.setBackground(btnColor);
+
         JButton redoButton = new JButton("вперед");
         redoButton.addActionListener(new UndoActionListener(UndoActionType.REDO));
+        redoButton.setBackground(btnColor);
 
 
+        Color backgroundColor = new Color(250, 249, 212);
         JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panel1.setBackground(backgroundColor);
         panel1.add(cutButton);
         panel1.add(copyButton);
         panel1.add(pasteButton);
@@ -138,6 +151,7 @@ public class Main {
         panel1.add(fontFamilyComboBox);
 
         JPanel panel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panel2.setBackground(backgroundColor);
         panel2.add(insertPictureButton);
         panel2.add(deletePictureButton);
         panel2.add(new JSeparator(SwingConstants.VERTICAL));
@@ -155,6 +169,7 @@ public class Main {
         frame.add(editorScrollPane, BorderLayout.CENTER);
 
         JMenuBar menuBar = new JMenuBar();
+        menuBar.setBackground(Color.ORANGE);
         JMenu fileMenu = new JMenu("МЕНЮ");
         fileMenu.setMnemonic(KeyEvent.VK_F);
 
@@ -188,7 +203,7 @@ public class Main {
         frame.setJMenuBar(menuBar);
 
         frame.setSize(1000, 500);
-        frame.setLocation(100, 500);
+        frame.setLocation(200, 100);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
 
