@@ -4,15 +4,15 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class UserInterface {
-    static Color BUTTON_COLOR = new Color(145, 204, 172);
-    static Color BACKGROUND_COLOR = new Color(193, 230, 212);
+    static Color BACKGROUND_COLOR = new Color(223, 195, 250);
+    static Color BUTTON_COLOR = new Color(178, 111, 242);
+    static Color LABEL_COLOR = Color.white;
 
     static void createUI(JFrame frame, JTextPane editor, StylingController sc, FileController fc) {
-
-        UIManager.put("TextPane.font", new Font("Bell MT", Font.PLAIN, 18));
+        UIManager.put("TextPane.font", new Font("Arial", Font.PLAIN, 30));
         frame.setTitle("Text Editor ~ unsaved file");
         JScrollPane editorScrollPane = new JScrollPane(editor);
-        editor.setBorder(new LineBorder(BACKGROUND_COLOR, 5));
+        editor.setBorder(new LineBorder(BUTTON_COLOR, 5));
 
         JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panel1.setBackground(BACKGROUND_COLOR);
@@ -24,6 +24,7 @@ public class UserInterface {
         setButton(sc.formatButtons.underline, "Underline", panel1);
 
         sc.textColor.colorButton.setBackground(BUTTON_COLOR);
+        sc.textColor.colorButton.setForeground(LABEL_COLOR);
 
         setComboBox(sc.textAlign.textAlignComboBox, panel1);
         setComboBox(sc.fontSize.fontSizeComboBox, panel1);
@@ -31,14 +32,18 @@ public class UserInterface {
 
         JPanel panel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         sc.insertPicture.insertPictureButton.setBackground(BUTTON_COLOR);
+        sc.insertPicture.insertPictureButton.setForeground(LABEL_COLOR);
         panel2.add(sc.insertPicture.insertPictureButton);
 
         sc.deletePicture.deletePictureButton.setBackground(BUTTON_COLOR);
+        sc.deletePicture.deletePictureButton.setForeground(LABEL_COLOR);
         panel2.add(sc.deletePicture.deletePictureButton);
         panel2.setBackground(BACKGROUND_COLOR);
-        
+
         sc.undoRedo.undoButton.setBackground(BUTTON_COLOR);
         sc.undoRedo.redoButton.setBackground(BUTTON_COLOR);
+       sc.undoRedo.undoButton.setForeground(LABEL_COLOR);
+        sc.undoRedo.redoButton.setForeground(LABEL_COLOR);
         panel2.add(sc.undoRedo.undoButton);
         panel2.add(sc.undoRedo.redoButton);
 
@@ -53,6 +58,7 @@ public class UserInterface {
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(BUTTON_COLOR);
+        menuBar.setForeground(LABEL_COLOR);
         menuBar.add(createMenu(fc.newFile.newFileButton, fc.openFile.openFileButton, fc.saveFile.saveFileButton, fc.closeFile.closeFileButton));
         frame.setJMenuBar(menuBar);
 
@@ -66,6 +72,7 @@ public class UserInterface {
     private static void setButton(JButton button, String label, JPanel panel){
         button.setHideActionText(true);
         button.setBackground(BUTTON_COLOR);
+        button.setForeground(LABEL_COLOR);
         button.setText(label);
         panel.add(button);
     }
@@ -73,11 +80,13 @@ public class UserInterface {
     private static void setComboBox(JComboBox<String> comboBox, JPanel panel){
         comboBox.setEditable(false);
         comboBox.setBackground(BUTTON_COLOR);
+        comboBox.setForeground(LABEL_COLOR);
         panel.add(comboBox);
     }
 
     public static JMenu createMenu(JMenuItem newFile, JMenuItem openFile, JMenuItem saveFile, JMenuItem closeFile){
         JMenu fileMenu = new JMenu("Menu");
+        fileMenu.setForeground(LABEL_COLOR);
         fileMenu.setMnemonic(KeyEvent.VK_F);
 
         newFile.setMnemonic(KeyEvent.VK_N);
