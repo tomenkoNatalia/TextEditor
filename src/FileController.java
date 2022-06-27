@@ -33,11 +33,11 @@ public class FileController {
     }
 
      class NewFile implements ActionListener {
-        static JMenuItem newFile;
+         JMenuItem newFileButton;
 
         public NewFile() {
-            newFile = new JMenuItem("New file");
-            newFile.addActionListener(this);
+            newFileButton = new JMenuItem("New file");
+            newFileButton.addActionListener(this);
         }
 
         StyledDocument getNewDocument() {
@@ -65,11 +65,11 @@ public class FileController {
     }
 
      class OpenFile implements ActionListener {
-        static JMenuItem openFile;
+        JMenuItem openFileButton;
 
         public OpenFile() {
-            openFile = new JMenuItem("Open File");
-            openFile.addActionListener(this);
+            openFileButton = new JMenuItem("Open File");
+            openFileButton.addActionListener(this);
         }
 
         @Override
@@ -99,8 +99,7 @@ public class FileController {
         }
 
          void readFile(File file) {
-
-            StyledDocument doc = null;
+            StyledDocument doc;
 
             try (InputStream fis = new FileInputStream(file); ObjectInputStream ois = new ObjectInputStream(fis)) {
 
@@ -138,11 +137,11 @@ public class FileController {
     }
 
      class SaveFile implements ActionListener {
-        static JMenuItem saveFile;
+        JMenuItem saveFileButton;
 
         public SaveFile() {
-            saveFile = new JMenuItem("Save File");
-            saveFile.addActionListener(this);
+            saveFileButton = new JMenuItem("Save File");
+            saveFileButton.addActionListener(this);
         }
 
         @Override

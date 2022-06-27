@@ -21,11 +21,10 @@ public class StylingController {
     FontSize fontSize = new FontSize();
     InsertPicture insertPicture = new InsertPicture();
     DeletePicture deletePicture = new DeletePicture();
-    PictureFocusListener pictureFocusListener = new PictureFocusListener();
     
-    private JFrame frame;
-    private JTextPane editor;
-    private UndoManager undoMgr;
+    private final JFrame frame;
+    private final JTextPane editor;
+    private final UndoManager undoMgr;
     private static String pictureButtonName;
 
     enum UndoActionType {UNDO, REDO};
@@ -37,19 +36,16 @@ public class StylingController {
     }
 
     class FormatButtons implements ActionListener {
-        static JButton bold;
-        static JButton italic;
-        static JButton underline;
+         JButton bold;
+         JButton italic;
+         JButton underline;
 
          public FormatButtons() {
              bold = new JButton(new BoldAction());
-             bold.setText("Bold");
              bold.addActionListener(this);
              italic = new JButton(new ItalicAction());
-             italic.setText("Italic");
              italic.addActionListener(this);
              underline = new JButton(new UnderlineAction());
-             underline.setText("Underline");
              underline.addActionListener(this);
          }
 
@@ -60,19 +56,16 @@ public class StylingController {
     }
 
     class EditButtons implements ActionListener {
-        static JButton copy;
-        static JButton paste;
-        static JButton cut;
+         JButton copy;
+         JButton paste;
+         JButton cut;
 
         public EditButtons() {
             copy = new JButton(new CopyAction());
-            copy.setText("Copy");
             copy.addActionListener(this);
             paste = new JButton(new PasteAction());
-            paste.setText("Paste");
             paste.addActionListener(this);
             cut = new JButton(new CutAction());
-            cut.setText("Cut");
             cut.addActionListener(this);
         }
 
@@ -83,17 +76,17 @@ public class StylingController {
     }
 
      class TextColor implements ActionListener {
-         static JButton colorButton;
+          JButton colorButton;
 
          public TextColor() {
-             colorButton = new JButton("text color");
+             colorButton = new JButton("Text Color");
              colorButton.addActionListener(this);
          }
 
          @Override
         public void actionPerformed(ActionEvent e) {
 
-            Color newColor = JColorChooser.showDialog(frame, "color picker", Color.RED);
+            Color newColor = JColorChooser.showDialog(frame, "Color Picker", Color.RED);
             if (newColor == null) {
 
                 editor.requestFocusInWindow();
@@ -107,10 +100,10 @@ public class StylingController {
     }
 
      class TextAlign implements ItemListener {
-         static JComboBox<String> textAlignComboBox;
+          JComboBox<String> textAlignComboBox;
 
          public TextAlign() {
-             textAlignComboBox = new JComboBox<>(new String[]{"text alignment", "вліво", "посередині", "вправо"});
+             textAlignComboBox = new JComboBox<>(new String[]{"Text Alignment", "left", "right", "center"});
              textAlignComboBox.addItemListener(this);
          }
 
@@ -132,10 +125,10 @@ public class StylingController {
     }
 
      class FontSize implements ItemListener {
-         static JComboBox<String> fontSizeComboBox;
+          JComboBox<String> fontSizeComboBox;
 
          public FontSize() {
-             fontSizeComboBox = new JComboBox<>(new String[]{"font size", "12", "14", "16", "18", "20", "22", "24", "26", "28", "30", "36", "48", "72"});
+             fontSizeComboBox = new JComboBox<>(new String[]{"Font Size", "12", "14", "16", "18", "20", "22", "24", "26", "28", "30", "36", "48", "72"});
              fontSizeComboBox.addItemListener(this);
          }
 
@@ -165,10 +158,10 @@ public class StylingController {
 
      class FontFamily implements ItemListener {
 
-         static JComboBox<String> fontFamilyComboBox;
+          JComboBox<String> fontFamilyComboBox;
 
          public FontFamily() {
-             fontFamilyComboBox = new JComboBox<>(new String[]{"font family", "Arial", "Bell MT", "Calibri", "Courier New","Georgia",
+             fontFamilyComboBox = new JComboBox<>(new String[]{"Font Family", "Arial", "Bell MT", "Calibri", "Courier New","Georgia",
                      "Helevetica", "Lucida Sans", "MS Gothic", "Times New Roman", "Verdana"});
              fontFamilyComboBox.addItemListener(this);
          }
@@ -235,10 +228,10 @@ public class StylingController {
 //    }
 
      class InsertPicture implements ActionListener {
-         static JButton insertPictureButton;
+         JButton insertPictureButton;
 
          public InsertPicture() {
-             insertPictureButton = new JButton("insert picture");
+             insertPictureButton = new JButton("Insert Picture");
              insertPictureButton.addActionListener(this);
          }
 
@@ -298,10 +291,10 @@ public class StylingController {
     }
 
      class DeletePicture implements ActionListener {
-         static JButton deletePictureButton;
+         JButton deletePictureButton;
 
          public DeletePicture() {
-             deletePictureButton = new JButton("delete picture");
+             deletePictureButton = new JButton("Delete Picture");
              deletePictureButton.addActionListener(this);
          }
 

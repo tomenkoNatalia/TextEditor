@@ -1,13 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 
 public class UserInterface {
 
-    static void createUI(JFrame frame, JTextPane editor, StylingController stylingController, FileController fileController) {
+    static void createUI(JFrame frame, JTextPane editor, StylingController sc, FileController fc) {
 
         frame.setTitle("Text Editor ~ unsaved file");
         JScrollPane editorScrollPane = new JScrollPane(editor);
@@ -17,26 +14,25 @@ public class UserInterface {
         Color backgroundColor = new Color(250, 249, 212);
         JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panel1.setBackground(backgroundColor);
+        setButton(sc.editButtons.copy, "Copy", panel1);
+        setButton(sc.editButtons.paste, "Paste", panel1);
+        setButton(sc.editButtons.cut, "Cut", panel1);
+        setButton(sc.formatButtons.bold, "Bold", panel1);
+        setButton(sc.formatButtons.italic, "Italic", panel1);
+        setButton(sc.formatButtons.underline, "Underline", panel1);
 
-        setButton(StylingController.EditButtons.copy, panel1);
-        setButton(StylingController.EditButtons.paste, panel1);
-        setButton(StylingController.EditButtons.cut, panel1);
-        setButton(StylingController.FormatButtons.bold, panel1);
-        setButton(StylingController.FormatButtons.italic, panel1);
-        setButton(StylingController.FormatButtons.underline, panel1);
+        sc.textColor.colorButton.setBackground(new Color(235, 204, 113));
 
-        StylingController.TextColor.colorButton.setBackground(new Color(235, 204, 113));
-
-        setComboBox(StylingController.TextAlign.textAlignComboBox, panel1);
-        setComboBox(StylingController.FontSize.fontSizeComboBox, panel1);
-        setComboBox(StylingController.FontFamily.fontFamilyComboBox, panel1);
+        setComboBox(sc.textAlign.textAlignComboBox, panel1);
+        setComboBox(sc.fontSize.fontSizeComboBox, panel1);
+        setComboBox(sc.fontFamily.fontFamilyComboBox, panel1);
 
         JPanel panel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        StylingController.InsertPicture.insertPictureButton.setBackground(new Color(235, 204, 113));
-        panel2.add(StylingController.InsertPicture.insertPictureButton);
+        sc.insertPicture.insertPictureButton.setBackground(new Color(235, 204, 113));
+        panel2.add(sc.insertPicture.insertPictureButton);
 
-        StylingController.DeletePicture.deletePictureButton.setBackground(new Color(235, 204, 113));
-        panel2.add(StylingController.DeletePicture.deletePictureButton);
+        sc.deletePicture.deletePictureButton.setBackground(new Color(235, 204, 113));
+        panel2.add(sc.deletePicture.deletePictureButton);
         panel2.setBackground(backgroundColor);
 
 //        undoButton.setBackground(new Color(235, 204, 113));
@@ -57,7 +53,7 @@ public class UserInterface {
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(Color.ORANGE);
-        menuBar.add(createMenu(FileController.NewFile.newFile, FileController.OpenFile.openFile, FileController.SaveFile.saveFile));
+        menuBar.add(createMenu(fc.newFile.newFileButton, fc.openFile.openFileButton, fc.saveFile.saveFileButton));
         frame.setJMenuBar(menuBar);
 
         frame.setSize(1000, 500);
@@ -67,9 +63,10 @@ public class UserInterface {
 
         editor.requestFocusInWindow();
     }
-    private static void setButton(JButton button, JPanel panel){
+    private static void setButton(JButton button, String label, JPanel panel){
         button.setHideActionText(true);
         button.setBackground(new Color(235, 204, 113));
+        button.setText(label);
         panel.add(button);
     }
 
