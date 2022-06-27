@@ -15,7 +15,7 @@ public class FileController {
     CloseFile closeFile = new CloseFile();
     JFrame frame;
      JTextPane editor;
-     UndoManager undoMgr;
+     UndoManager undoManager;
      File file;
 
      public StyledDocument newFile(){
@@ -24,10 +24,10 @@ public class FileController {
          return doc;
      }
 
-    public FileController(JFrame frame, JTextPane editor, UndoManager undoMgr) {
+    public FileController(JFrame frame, JTextPane textPane, UndoManager undoManager) {
         this.frame = frame;
-        this.editor = editor;
-        this.undoMgr = undoMgr;
+        this.editor = textPane;
+        this.undoManager = undoManager;
     }
 
     class UndoEditListener implements UndoableEditListener {
@@ -35,7 +35,7 @@ public class FileController {
         @Override
         public void undoableEditHappened(UndoableEditEvent e) {
 
-            undoMgr.addEdit(e.getEdit());
+            undoManager.addEdit(e.getEdit());
         }
     }
 

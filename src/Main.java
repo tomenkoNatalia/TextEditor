@@ -22,11 +22,11 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         JFrame frame = new JFrame();
-        JTextPane editor = new JTextPane();
-        UndoManager undoMgr = new UndoManager();
-        StylingController sc = new StylingController(frame, editor, undoMgr);
-        FileController fc = new FileController(frame, editor, undoMgr);
-        editor.setDocument(fc.newFile());
-        UserInterface.createUI(frame, editor, sc, fc);
+        JTextPane textPane = new JTextPane();
+        UndoManager undoManager = new UndoManager();
+        StylingController sc = new StylingController(frame, textPane, undoManager);
+        FileController fc = new FileController(frame, textPane, undoManager);
+        textPane.setDocument(fc.newFile());
+        UserInterface.createUI(frame, textPane, sc, fc);
     }
 }

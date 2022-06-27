@@ -9,7 +9,10 @@ import javax.swing.text.*;
 import javax.swing.undo.UndoManager;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.font.TextAttribute;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class StylingController {
@@ -24,14 +27,14 @@ public class StylingController {
     UndoRedo  undoRedo = new UndoRedo();
     
     private final JFrame frame;
-    private final JTextPane editor;
-    private final UndoManager undoMgr;
+    private final JTextPane textPane;
+    private final UndoManager undoManager;
     private static String pictureButtonName;
 
-    public StylingController(JFrame frame, JTextPane editor, UndoManager undoMgr) {
+    public StylingController(JFrame frame, JTextPane textPane, UndoManager undoManager) {
         this.frame = frame;
-        this.editor = editor;
-        this.undoMgr = undoMgr;
+        this.textPane = textPane;
+        this.undoManager = undoManager;
     }
 
     class FormatButtons implements ActionListener {
@@ -42,15 +45,20 @@ public class StylingController {
          public FormatButtons() {
              bold = new JButton(new BoldAction());
              bold.addActionListener(this);
+             bold.setFont(new Font("Arial", Font.BOLD, 15));
              italic = new JButton(new ItalicAction());
              italic.addActionListener(this);
+             italic.setFont(new Font("Verdana", Font.ITALIC, 14));
              underline = new JButton(new UnderlineAction());
              underline.addActionListener(this);
+             Map<TextAttribute, Object> attributes = new HashMap<>();
+             attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+             underline.setFont(underline.getFont().deriveFont(attributes));
          }
 
          @Override
         public void actionPerformed(ActionEvent e) {
-            editor.requestFocusInWindow();
+            textPane.requestFocusInWindow();
         }
     }
 
@@ -70,7 +78,7 @@ public class StylingController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            editor.requestFocusInWindow();
+            textPane.requestFocusInWindow();
         }
     }
 
@@ -78,7 +86,7 @@ public class StylingController {
           JButton colorButton;
 
          public TextColor() {
-             colorButton = new JButton("Text Color");
+             colorButton = new JButton();
              colorButton.addActionListener(this);
          }
 
@@ -88,13 +96,13 @@ public class StylingController {
             Color newColor = JColorChooser.showDialog(frame, "Color Picker", Color.RED);
             if (newColor == null) {
 
-                editor.requestFocusInWindow();
+                textPane.requestFocusInWindow();
                 return;
             }
             SimpleAttributeSet attr = new SimpleAttributeSet();
             StyleConstants.setForeground(attr, newColor);
-            editor.setCharacterAttributes(attr, false);
-            editor.requestFocusInWindow();
+            textPane.setCharacterAttributes(attr, false);
+            textPane.requestFocusInWindow();
         }
     }
 
@@ -119,7 +127,7 @@ public class StylingController {
 
             textAlignComboBox.setAction(new StyledEditorKit.AlignmentAction(alignmentStr, newAlignment));
             textAlignComboBox.setSelectedIndex(0);
-            editor.requestFocusInWindow();
+            textPane.requestFocusInWindow();
         }
     }
 
@@ -151,7 +159,7 @@ public class StylingController {
 
             fontSizeComboBox.setAction(new StyledEditorKit.FontSizeAction(fontSizeStr, newFontSize));
             fontSizeComboBox.setSelectedIndex(0);
-            editor.requestFocusInWindow();
+            textPane.requestFocusInWindow();
         }
     }
 
@@ -176,7 +184,7 @@ public class StylingController {
             String fontFamily = (String) e.getItem();
             fontFamilyComboBox.setAction(new StyledEditorKit.FontFamilyAction(fontFamily, fontFamily));
             fontFamilyComboBox.setSelectedIndex(0);
-            editor.requestFocusInWindow();
+            textPane.requestFocusInWindow();
         }
     }
 
@@ -185,7 +193,7 @@ public class StylingController {
         @Override
         public void undoableEditHappened(UndoableEditEvent e) {
 
-            undoMgr.addEdit(e.getEdit());
+            undoManager.addEdit(e.getEdit());
         }
     }
 
@@ -194,9 +202,9 @@ public class StylingController {
         JButton redoButton;
 
         public UndoRedo() {
-            undoButton = new JButton("<<");
+            undoButton = new JButton();
             undoButton.addActionListener(this);
-            redoButton = new JButton(">>");
+            redoButton = new JButton();
             redoButton.addActionListener(this);
         }
 
@@ -205,24 +213,24 @@ public class StylingController {
 
             Object source = e.getSource();
             if (undoButton.equals(source)) {
-                if (!undoMgr.canUndo()) {
+                if (!undoManager.canUndo()) {
 
-                    editor.requestFocusInWindow();
+                    textPane.requestFocusInWindow();
                     return; // no edits to undo
                 }
 
-                undoMgr.undo();
+                undoManager.undo();
             } else if (redoButton.equals(source)) {
-                if (!undoMgr.canRedo()) {
+                if (!undoManager.canRedo()) {
 
-                    editor.requestFocusInWindow();
+                    textPane.requestFocusInWindow();
                     return; // no edits to redo
                 }
 
-                undoMgr.redo();
+                undoManager.redo();
             }
 
-            editor.requestFocusInWindow();
+            textPane.requestFocusInWindow();
         }
     }
 
@@ -241,7 +249,7 @@ public class StylingController {
 
             if (pictureFile == null) {
 
-                editor.requestFocusInWindow();
+                textPane.requestFocusInWindow();
                 return;
             }
 
@@ -253,8 +261,8 @@ public class StylingController {
             picButton.setAlignmentX(.9f);
             picButton.addFocusListener(new PictureFocusListener());
             picButton.setName("PICTURE_ID_" + new Random().nextInt());
-            editor.insertComponent(picButton);
-            editor.requestFocusInWindow();
+            textPane.insertComponent(picButton);
+            textPane.requestFocusInWindow();
         }
 
          File choosePictureFile() {
@@ -300,7 +308,7 @@ public class StylingController {
          @Override
         public void actionPerformed(ActionEvent e) {
 
-            StyledDocument doc = (DefaultStyledDocument) editor.getDocument();
+            StyledDocument doc = (DefaultStyledDocument) textPane.getDocument();
             ElementIterator iterator = new ElementIterator(doc);
             Element element;
 
@@ -324,7 +332,7 @@ public class StylingController {
                 }
             }
 
-            editor.requestFocusInWindow();
+            textPane.requestFocusInWindow();
             pictureButtonName = null;
         }
     }
