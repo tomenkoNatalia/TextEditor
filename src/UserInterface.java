@@ -1,17 +1,18 @@
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class UserInterface {
-    static Color BUTTON_COLOR = new Color(235, 204, 113);
-    static Color BACKGROUND_COLOR = new Color(250, 249, 212);
+    static Color BUTTON_COLOR = new Color(145, 204, 172);
+    static Color BACKGROUND_COLOR = new Color(193, 230, 212);
 
     static void createUI(JFrame frame, JTextPane editor, StylingController sc, FileController fc) {
 
+        UIManager.put("TextPane.font", new Font("Bell MT", Font.PLAIN, 18));
         frame.setTitle("Text Editor ~ unsaved file");
         JScrollPane editorScrollPane = new JScrollPane(editor);
-//        editor.setDocument(getNewDocument);
-//        undoMgr = new UndoManager();
+        editor.setBorder(new LineBorder(BACKGROUND_COLOR, 5));
 
         JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panel1.setBackground(BACKGROUND_COLOR);
@@ -35,14 +36,6 @@ public class UserInterface {
         sc.deletePicture.deletePictureButton.setBackground(BUTTON_COLOR);
         panel2.add(sc.deletePicture.deletePictureButton);
         panel2.setBackground(BACKGROUND_COLOR);
-
-//        undoButton.setBackground(BUTTON_COLOR);
-//
-//        JButton redoButton = new JButton(">>");
-//        redoButton.addActionListener(redoActionListener);
-//        redoButton.setBackground(BUTTON_COLOR);
-//        panel2.add(undoButton);
-//        panel2.add(redoButton);
         
         sc.undoRedo.undoButton.setBackground(BUTTON_COLOR);
         sc.undoRedo.redoButton.setBackground(BUTTON_COLOR);
@@ -59,8 +52,8 @@ public class UserInterface {
         frame.add(editorScrollPane, BorderLayout.CENTER);
 
         JMenuBar menuBar = new JMenuBar();
-        menuBar.setBackground(Color.ORANGE);
-        menuBar.add(createMenu(fc.newFile.newFileButton, fc.openFile.openFileButton, fc.saveFile.saveFileButton));
+        menuBar.setBackground(BUTTON_COLOR);
+        menuBar.add(createMenu(fc.newFile.newFileButton, fc.openFile.openFileButton, fc.saveFile.saveFileButton, fc.closeFile.closeFileButton));
         frame.setJMenuBar(menuBar);
 
         frame.setSize(1000, 500);
@@ -79,28 +72,23 @@ public class UserInterface {
 
     private static void setComboBox(JComboBox<String> comboBox, JPanel panel){
         comboBox.setEditable(false);
-        comboBox.setBackground(Color.ORANGE);
+        comboBox.setBackground(BUTTON_COLOR);
         panel.add(comboBox);
     }
 
-    public static JMenu createMenu(JMenuItem newFile, JMenuItem openFile, JMenuItem saveFile){
+    public static JMenu createMenu(JMenuItem newFile, JMenuItem openFile, JMenuItem saveFile, JMenuItem closeFile){
         JMenu fileMenu = new JMenu("Menu");
         fileMenu.setMnemonic(KeyEvent.VK_F);
 
         newFile.setMnemonic(KeyEvent.VK_N);
         openFile.setMnemonic(KeyEvent.VK_O);
         saveFile.setMnemonic(KeyEvent.VK_S);
-//        exitItem.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//
-//                System.exit(0);
-//            }
-//        });
+        closeFile.setMnemonic(KeyEvent.VK_X);
 
         fileMenu.add(newFile);
         fileMenu.add(openFile);
         fileMenu.add(saveFile);
+        fileMenu.add(closeFile);
 
         return fileMenu;
     }

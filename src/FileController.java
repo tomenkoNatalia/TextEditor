@@ -12,6 +12,7 @@ public class FileController {
     NewFile newFile = new NewFile();
     SaveFile saveFile = new SaveFile();
     OpenFile openFile = new OpenFile();
+    CloseFile closeFile = new CloseFile();
     JFrame frame;
      JTextPane editor;
      UndoManager undoMgr;
@@ -180,6 +181,20 @@ public class FileController {
             } else {
                 return null;
             }
+        }
+    }
+
+    class CloseFile implements ActionListener{
+         JMenuItem closeFileButton;
+
+        public CloseFile() {
+            closeFileButton = new JMenuItem("Close");
+            closeFileButton.addActionListener(this);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.exit(0);
         }
     }
 }

@@ -189,43 +189,6 @@ public class StylingController {
         }
     }
 
-//     class UndoActionListener implements ActionListener {
-//         UndoActionType undoActionType;
-//
-//        public UndoActionListener(UndoActionType type) {
-//
-//            undoActionType = type;
-//        }
-//
-//        @Override
-//        public void actionPerformed(ActionEvent e) {
-//
-//            switch (undoActionType) {
-//
-//                case UNDO:
-//                    if (!undoMgr.canUndo()) {
-//
-//                        editor.requestFocusInWindow();
-//                        return; // no edits to undo
-//                    }
-//
-//                    undoMgr.undo();
-//                    break;
-//
-//                case REDO:
-//                    if (!undoMgr.canRedo()) {
-//
-//                        editor.requestFocusInWindow();
-//                        return; // no edits to redo
-//                    }
-//
-//                    undoMgr.redo();
-//            }
-//
-//            editor.requestFocusInWindow();
-//        }
-//    }
-
     class UndoRedo implements ActionListener {
         JButton undoButton;
         JButton redoButton;
