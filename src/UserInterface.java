@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 
 public class UserInterface {
+    static Color BUTTON_COLOR = new Color(235, 204, 113);
+    static Color BACKGROUND_COLOR = new Color(250, 249, 212);
 
     static void createUI(JFrame frame, JTextPane editor, StylingController sc, FileController fc) {
 
@@ -11,9 +13,8 @@ public class UserInterface {
 //        editor.setDocument(getNewDocument);
 //        undoMgr = new UndoManager();
 
-        Color backgroundColor = new Color(250, 249, 212);
         JPanel panel1 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panel1.setBackground(backgroundColor);
+        panel1.setBackground(BACKGROUND_COLOR);
         setButton(sc.editButtons.copy, "Copy", panel1);
         setButton(sc.editButtons.paste, "Paste", panel1);
         setButton(sc.editButtons.cut, "Cut", panel1);
@@ -21,27 +22,33 @@ public class UserInterface {
         setButton(sc.formatButtons.italic, "Italic", panel1);
         setButton(sc.formatButtons.underline, "Underline", panel1);
 
-        sc.textColor.colorButton.setBackground(new Color(235, 204, 113));
+        sc.textColor.colorButton.setBackground(BUTTON_COLOR);
 
         setComboBox(sc.textAlign.textAlignComboBox, panel1);
         setComboBox(sc.fontSize.fontSizeComboBox, panel1);
         setComboBox(sc.fontFamily.fontFamilyComboBox, panel1);
 
         JPanel panel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        sc.insertPicture.insertPictureButton.setBackground(new Color(235, 204, 113));
+        sc.insertPicture.insertPictureButton.setBackground(BUTTON_COLOR);
         panel2.add(sc.insertPicture.insertPictureButton);
 
-        sc.deletePicture.deletePictureButton.setBackground(new Color(235, 204, 113));
+        sc.deletePicture.deletePictureButton.setBackground(BUTTON_COLOR);
         panel2.add(sc.deletePicture.deletePictureButton);
-        panel2.setBackground(backgroundColor);
+        panel2.setBackground(BACKGROUND_COLOR);
 
-//        undoButton.setBackground(new Color(235, 204, 113));
+//        undoButton.setBackground(BUTTON_COLOR);
 //
 //        JButton redoButton = new JButton(">>");
 //        redoButton.addActionListener(redoActionListener);
-//        redoButton.setBackground(new Color(235, 204, 113));
+//        redoButton.setBackground(BUTTON_COLOR);
 //        panel2.add(undoButton);
 //        panel2.add(redoButton);
+        
+        sc.undoRedo.undoButton.setBackground(BUTTON_COLOR);
+        sc.undoRedo.redoButton.setBackground(BUTTON_COLOR);
+        panel2.add(sc.undoRedo.undoButton);
+        panel2.add(sc.undoRedo.redoButton);
+
 
         JPanel toolBarPanel = new JPanel();
         toolBarPanel.setLayout(new BoxLayout(toolBarPanel, BoxLayout.PAGE_AXIS));
@@ -65,7 +72,7 @@ public class UserInterface {
     }
     private static void setButton(JButton button, String label, JPanel panel){
         button.setHideActionText(true);
-        button.setBackground(new Color(235, 204, 113));
+        button.setBackground(BUTTON_COLOR);
         button.setText(label);
         panel.add(button);
     }

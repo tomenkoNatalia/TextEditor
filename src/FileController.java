@@ -17,6 +17,12 @@ public class FileController {
      UndoManager undoMgr;
      File file;
 
+     public StyledDocument newFile(){
+         StyledDocument doc = new DefaultStyledDocument();
+         doc.addUndoableEditListener(new UndoEditListener());
+         return doc;
+     }
+
     public FileController(JFrame frame, JTextPane editor, UndoManager undoMgr) {
         this.frame = frame;
         this.editor = editor;
@@ -40,17 +46,11 @@ public class FileController {
             newFileButton.addActionListener(this);
         }
 
-        StyledDocument getNewDocument() {
-        StyledDocument doc = new DefaultStyledDocument();
-        doc.addUndoableEditListener(new UndoEditListener());
-        return doc;
-    }
-
         @Override
         public void actionPerformed(ActionEvent e) {
 
             initEditorAttributes();
-            editor.setDocument(getNewDocument());
+            editor.setDocument(newFile());
             file = null;
             frame.setTitle("Text Editor ~ new file");
         }

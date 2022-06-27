@@ -33,6 +33,7 @@ public class Main {
                 UndoManager undoMgr = new UndoManager();
                 StylingController sc = new StylingController(frame, editor, undoMgr);
                 FileController fc = new FileController(frame, editor, undoMgr);
+                editor.setDocument(fc.newFile());
                 UserInterface.createUI(frame, editor, sc, fc);
             }
         });

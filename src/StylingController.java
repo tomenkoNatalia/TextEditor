@@ -21,13 +21,12 @@ public class StylingController {
     FontSize fontSize = new FontSize();
     InsertPicture insertPicture = new InsertPicture();
     DeletePicture deletePicture = new DeletePicture();
+    UndoRedo  undoRedo = new UndoRedo();
     
     private final JFrame frame;
     private final JTextPane editor;
     private final UndoManager undoMgr;
     private static String pictureButtonName;
-
-    enum UndoActionType {UNDO, REDO};
 
     public StylingController(JFrame frame, JTextPane editor, UndoManager undoMgr) {
         this.frame = frame;
@@ -181,15 +180,15 @@ public class StylingController {
         }
     }
 
-//     class UndoEditListener implements UndoableEditListener {
-//
-//        @Override
-//        public void undoableEditHappened(UndoableEditEvent e) {
-//
-//            undoMgr.addEdit(e.getEdit());
-//        }
-//    }
-//
+     class UndoEditListener implements UndoableEditListener {
+
+        @Override
+        public void undoableEditHappened(UndoableEditEvent e) {
+
+            undoMgr.addEdit(e.getEdit());
+        }
+    }
+
 //     class UndoActionListener implements ActionListener {
 //         UndoActionType undoActionType;
 //
@@ -226,6 +225,43 @@ public class StylingController {
 //            editor.requestFocusInWindow();
 //        }
 //    }
+
+    class UndoRedo implements ActionListener {
+        JButton undoButton;
+        JButton redoButton;
+
+        public UndoRedo() {
+            undoButton = new JButton("<<");
+            undoButton.addActionListener(this);
+            redoButton = new JButton(">>");
+            redoButton.addActionListener(this);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            Object source = e.getSource();
+            if (undoButton.equals(source)) {
+                if (!undoMgr.canUndo()) {
+
+                    editor.requestFocusInWindow();
+                    return; // no edits to undo
+                }
+
+                undoMgr.undo();
+            } else if (redoButton.equals(source)) {
+                if (!undoMgr.canRedo()) {
+
+                    editor.requestFocusInWindow();
+                    return; // no edits to redo
+                }
+
+                undoMgr.redo();
+            }
+
+            editor.requestFocusInWindow();
+        }
+    }
 
      class InsertPicture implements ActionListener {
          JButton insertPictureButton;
