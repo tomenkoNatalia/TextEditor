@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/shit.iml" filepath="$PROJECT_DIR$/shit.iml" />
+      <module fileurl="file://$PROJECT_DIR$/TextEditor_Tomenko.iml" filepath="$PROJECT_DIR$/TextEditor_Tomenko.iml" />
     </modules>
   </component>
 </project>
