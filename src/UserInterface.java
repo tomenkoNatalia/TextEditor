@@ -13,7 +13,12 @@ public class UserInterface {
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(BUTTON_COLOR);
         menuBar.setForeground(LABEL_COLOR);
-        menuBar.add(createMenu(fc.newFile.newFileButton, fc.openFile.openFileButton, fc.saveFile.saveFileButton, fc.closeFile.closeFileButton));
+        menuBar.add(createFileMenu(fc.newFile.newFileButton, fc.openFile.openFileButton, fc.saveFile.saveFileButton, fc.closeFile.closeFileButton));
+        JMenu picture = new JMenu("Pictures");
+        picture.setForeground(LABEL_COLOR);
+        picture.add(sc.insertPicture.insertPictureButton);
+        picture.add(sc.deletePicture.deletePictureButton);
+        menuBar.add(picture);
         frame.setJMenuBar(menuBar);
 
         //top panel
@@ -24,16 +29,16 @@ public class UserInterface {
         setButton(sc.formatButtons.bold, "B", 50, topPanel);
         setButton(sc.formatButtons.italic, "I", 50, topPanel);
         setButton(sc.formatButtons.underline, "U", 50, topPanel);
-        setComboBox(sc.fontFamily.fontFamilyComboBox, topPanel);
-        setComboBox(sc.fontSize.fontSizeComboBox, topPanel);
-        setButton(sc.textColor.colorButton, "Text Color", 100, topPanel);
         topPanel.add(new JSeparator());
+        setComboBox(sc.fontFamily.fontFamilyComboBox, topPanel);
+        topPanel.add(new JSeparator());
+        setComboBox(sc.fontSize.fontSizeComboBox, topPanel);
         topPanel.add(new JSeparator());
         setComboBox(sc.textAlign.textAlignComboBox, topPanel);
         topPanel.add(new JSeparator());
+        setButton(sc.textColor.colorButton, "Text Color", 100, topPanel);
         topPanel.add(new JSeparator());
-        setButton(sc.insertPicture.insertPictureButton, "Insert Picture", 120, topPanel);
-        setButton(sc.deletePicture.deletePictureButton, "Delete Picture", 120, topPanel);
+        setButton(sc.backgroundColor.bgColor, "Page Color", 100, topPanel);
 
         //bottom panel
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
@@ -55,7 +60,7 @@ public class UserInterface {
 
         //configuring frame
         frame.setTitle("Text Editor ~ unsaved file");
-        frame.setSize(1000, 500);
+        frame.setSize(810, 500);
         frame.setLocation(200, 100);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
@@ -77,14 +82,14 @@ public class UserInterface {
 
     private static void setComboBox(JComboBox<String> comboBox, JPanel panel){
         comboBox.setEditable(false);
-        comboBox.setPreferredSize(new Dimension(120, 20));
+        comboBox.setPreferredSize(new Dimension(100, 20));
         comboBox.setBackground(BUTTON_COLOR);
         comboBox.setForeground(LABEL_COLOR);
         panel.add(comboBox);
     }
 
-    public static JMenu createMenu(JMenuItem newFile, JMenuItem openFile, JMenuItem saveFile, JMenuItem closeFile){
-        JMenu fileMenu = new JMenu("Menu");
+    public static JMenu createFileMenu(JMenuItem newFile, JMenuItem openFile, JMenuItem saveFile, JMenuItem closeFile){
+        JMenu fileMenu = new JMenu("File");
         fileMenu.setForeground(LABEL_COLOR);
         fileMenu.setMnemonic(KeyEvent.VK_F);
 

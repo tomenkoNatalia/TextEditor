@@ -1,7 +1,5 @@
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-import javax.swing.event.UndoableEditEvent;
-import javax.swing.event.UndoableEditListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.DefaultEditorKit.*;
 import javax.swing.text.StyledEditorKit.*;
@@ -20,6 +18,7 @@ public class StylingController {
     EditButtons editButtons = new EditButtons();
     TextAlign textAlign = new TextAlign();
     TextColor textColor = new TextColor();
+    BackgroundColor backgroundColor = new BackgroundColor();
     FontFamily fontFamily = new FontFamily();
     FontSize fontSize = new FontSize();
     InsertPicture insertPicture = new InsertPicture();
@@ -102,10 +101,29 @@ public class StylingController {
         }
     }
 
+    class BackgroundColor implements ActionListener{
+        JButton bgColor;
+
+        public BackgroundColor() {
+            this.bgColor = new JButton();
+            bgColor.addActionListener(this);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e){
+            Color newColor = JColorChooser.showDialog(frame, "Color Picker", Color.RED);
+            if (newColor == null) {
+                textPane.requestFocusInWindow();
+                return;
+            }
+            textPane.setBackground(newColor);
+        }
+    }
+
      class TextAlign implements ItemListener {
           JComboBox<String> textAlignComboBox;
          public TextAlign() {
-             textAlignComboBox = new JComboBox<>(new String[]{"Text Alignment", "left", "center", "right"});
+             textAlignComboBox = new JComboBox<>(new String[]{"Alignment", "left", "center", "right"});
              textAlignComboBox.addItemListener(this);
          }
 
@@ -125,7 +143,8 @@ public class StylingController {
      class FontSize implements ItemListener {
           JComboBox<String> fontSizeComboBox;
          public FontSize() {
-             fontSizeComboBox = new JComboBox<>(new String[]{"Font Size", "12", "14", "16", "18", "20", "22", "24", "26", "28", "30", "36", "48", "72"});
+             fontSizeComboBox = new JComboBox<>(new String[]{"12", "14", "16", "18", "20", "22", "24", "26", "28", "30", "36", "48", "72"});
+             fontSizeComboBox.setSelectedIndex(3);
              fontSizeComboBox.addItemListener(this);
          }
 
@@ -141,7 +160,6 @@ public class StylingController {
             } catch (NumberFormatException ex) {return;}
 
             fontSizeComboBox.setAction(new StyledEditorKit.FontSizeAction(fontSizeStr, newFontSize));
-            fontSizeComboBox.setSelectedIndex(0);
             textPane.requestFocusInWindow();
         }
     }
@@ -149,8 +167,9 @@ public class StylingController {
      class FontFamily implements ItemListener {
           JComboBox<String> fontFamilyComboBox;
          public FontFamily() {
-             fontFamilyComboBox = new JComboBox<>(new String[]{"Font Family", "Arial", "Bell MT", "Calibri", "Courier New","Georgia",
+             fontFamilyComboBox = new JComboBox<>(new String[]{"Arial", "Bell MT", "Calibri", "Courier New","Georgia",
                      "Helevetica", "Lucida Sans", "MS Gothic", "Times New Roman", "Verdana"});
+             fontFamilyComboBox.setSelectedIndex(0);
              fontFamilyComboBox.addItemListener(this);
          }
 
@@ -161,7 +180,6 @@ public class StylingController {
             }
             String fontFamily = (String) e.getItem();
             fontFamilyComboBox.setAction(new StyledEditorKit.FontFamilyAction(fontFamily, fontFamily));
-            fontFamilyComboBox.setSelectedIndex(0);
             textPane.requestFocusInWindow();
         }
     }
@@ -196,9 +214,9 @@ public class StylingController {
     }
 
      class InsertPicture implements ActionListener {
-         JButton insertPictureButton;
+         JMenuItem insertPictureButton;
          public InsertPicture() {
-             insertPictureButton = new JButton("Insert Picture");
+             insertPictureButton = new JMenuItem("Insert Picture");
              insertPictureButton.addActionListener(this);
          }
 
@@ -247,14 +265,14 @@ public class StylingController {
         }
     }
 
-     class DeletePicture implements ActionListener {
-         JButton deletePictureButton;
-         public DeletePicture() {
-             deletePictureButton = new JButton("Delete Picture");
-             deletePictureButton.addActionListener(this);
-         }
+    class DeletePicture implements ActionListener {
+        JMenuItem deletePictureButton;
+        public DeletePicture() {
+            deletePictureButton = new JMenuItem("Delete Picture");
+            deletePictureButton.addActionListener(this);
+        }
 
-         @Override
+        @Override
         public void actionPerformed(ActionEvent e) {
             StyledDocument doc = (DefaultStyledDocument) textPane.getDocument();
             ElementIterator iterator = new ElementIterator(doc);
