@@ -1,7 +1,6 @@
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 
 public class UserInterface {
     static Color BACKGROUND_COLOR = new Color(217, 190, 250);
@@ -9,17 +8,25 @@ public class UserInterface {
     static Color LABEL_COLOR = Color.white;
 
     static void createUI(JFrame frame, JTextPane textPane, StylingController sc, FileController fc) {
-        //menu bar with file action options
+        //menu bar
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(BUTTON_COLOR);
         menuBar.setForeground(LABEL_COLOR);
-        menuBar.add(createFileMenu(fc.newFile.newFileButton, fc.openFile.openFileButton, fc.saveFile.saveFileButton, fc.closeFile.closeFileButton));
-        JMenu picture = new JMenu("Pictures");
-        picture.setForeground(LABEL_COLOR);
-        picture.add(sc.insertPicture.insertPictureButton);
-        picture.add(sc.deletePicture.deletePictureButton);
-        menuBar.add(picture);
         frame.setJMenuBar(menuBar);
+
+        JMenu fileMenu = new JMenu("File");
+        fileMenu.setForeground(LABEL_COLOR);
+        fileMenu.add(fc.newFile.newFileButton);
+        fileMenu.add(fc.openFile.openFileButton);
+        fileMenu.add(fc.saveFile.saveFileButton);
+        fileMenu.add(fc.closeFile.closeFileButton);
+        menuBar.add(fileMenu);
+        JMenu pictureMenu = new JMenu("Pictures");
+        pictureMenu.setForeground(LABEL_COLOR);
+        pictureMenu.setForeground(LABEL_COLOR);
+        pictureMenu.add(sc.addPicture.addPictureButton);
+        pictureMenu.add(sc.deletePicture.deletePictureButton);
+        menuBar.add(pictureMenu);
 
         //top panel
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
@@ -59,7 +66,7 @@ public class UserInterface {
         scrollPane.setBorder(new LineBorder(BUTTON_COLOR, 5));
 
         //configuring frame
-        frame.setTitle("Text Editor ~ unsaved file");
+        frame.setTitle("Text Editor ~ new file");
         frame.setSize(810, 500);
         frame.setLocation(200, 100);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -86,23 +93,5 @@ public class UserInterface {
         comboBox.setBackground(BUTTON_COLOR);
         comboBox.setForeground(LABEL_COLOR);
         panel.add(comboBox);
-    }
-
-    public static JMenu createFileMenu(JMenuItem newFile, JMenuItem openFile, JMenuItem saveFile, JMenuItem closeFile){
-        JMenu fileMenu = new JMenu("File");
-        fileMenu.setForeground(LABEL_COLOR);
-        fileMenu.setMnemonic(KeyEvent.VK_F);
-
-        newFile.setMnemonic(KeyEvent.VK_N);
-        openFile.setMnemonic(KeyEvent.VK_O);
-        saveFile.setMnemonic(KeyEvent.VK_S);
-        closeFile.setMnemonic(KeyEvent.VK_X);
-
-        fileMenu.add(newFile);
-        fileMenu.add(openFile);
-        fileMenu.add(saveFile);
-        fileMenu.add(closeFile);
-
-        return fileMenu;
     }
 }

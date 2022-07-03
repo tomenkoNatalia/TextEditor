@@ -14,7 +14,7 @@ public class FileController {
      OpenFile openFile = new OpenFile();
      CloseFile closeFile = new CloseFile();
      JFrame frame;
-     JTextPane editor;
+     JTextPane textPane;
      UndoManager undoManager;
      File file;
 
@@ -26,7 +26,7 @@ public class FileController {
 
     public FileController(JFrame frame, JTextPane textPane, UndoManager undoManager) {
         this.frame = frame;
-        this.editor = textPane;
+        this.textPane = textPane;
         this.undoManager = undoManager;
     }
 
@@ -47,16 +47,16 @@ public class FileController {
         @Override
         public void actionPerformed(ActionEvent e) {
             initEditorAttributes();
-            editor.setDocument(newFile());
+            textPane.setDocument(newFile());
             file = null;
             frame.setTitle("Text Editor ~ new file");
         }
 
          void initEditorAttributes() {
-            AttributeSet attrs1 = editor.getCharacterAttributes();
-            SimpleAttributeSet attrs2 = new SimpleAttributeSet(attrs1);
-            attrs2.removeAttributes(attrs1);
-            editor.setCharacterAttributes(attrs2, true);
+            AttributeSet characterAttributes = textPane.getCharacterAttributes();
+            SimpleAttributeSet simpleAttributeSet = new SimpleAttributeSet(characterAttributes);
+            simpleAttributeSet.removeAttributes(characterAttributes);
+            textPane.setCharacterAttributes(simpleAttributeSet, true);
         }
     }
 
@@ -88,7 +88,7 @@ public class FileController {
 
          void readFile(File file) {
             StyledDocument doc;
-            try (InputStream fis = new FileInputStream(file); ObjectInputStream ois = new ObjectInputStream(fis)) {
+            try (InputStream stream = new FileInputStream(file); ObjectInputStream ois = new ObjectInputStream(stream)) {
                 doc = (DefaultStyledDocument) ois.readObject();
             } catch (FileNotFoundException ex) {
                 JOptionPane.showMessageDialog(frame, "Input file was not found!");
@@ -96,21 +96,8 @@ public class FileController {
             } catch (ClassNotFoundException | IOException ex) {
                 throw new RuntimeException(ex);
             }
-            editor.setDocument(doc);
+            textPane.setDocument(doc);
             doc.addUndoableEditListener(new UndoEditListener());
-            applyFocusListenerToPictures(doc);
-        }
-
-         void applyFocusListenerToPictures(StyledDocument doc) {
-            ElementIterator iterator = new ElementIterator(doc);
-            Element element;
-            while ((element = iterator.next()) != null) {
-                AttributeSet attrs = element.getAttributes();
-                if (attrs.containsAttribute(AbstractDocument.ElementNameAttribute, StyleConstants.ComponentElementName)) {
-                    JButton picButton = (JButton) StyleConstants.getComponent(attrs);
-                    picButton.addFocusListener(new StylingController.PictureFocusListener());
-                }
-            }
         }
     }
 
@@ -130,7 +117,7 @@ public class FileController {
                 }
             }
 
-            DefaultStyledDocument doc = (DefaultStyledDocument) editor.getDocument();
+            DefaultStyledDocument doc = (DefaultStyledDocument) textPane.getDocument();
             try (OutputStream fos = new FileOutputStream(file); ObjectOutputStream oos = new ObjectOutputStream(fos)) {
                 oos.writeObject(doc);
             } catch (IOException ex) {

@@ -17,11 +17,11 @@ public class StylingController {
     FormatButtons formatButtons = new FormatButtons();
     EditButtons editButtons = new EditButtons();
     TextAlign textAlign = new TextAlign();
-    TextColor textColor = new TextColor();
-    BackgroundColor backgroundColor = new BackgroundColor();
     FontFamily fontFamily = new FontFamily();
     FontSize fontSize = new FontSize();
-    InsertPicture insertPicture = new InsertPicture();
+    TextColor textColor = new TextColor();
+    BackgroundColor backgroundColor = new BackgroundColor();
+    AddPicture addPicture = new AddPicture();
     DeletePicture deletePicture = new DeletePicture();
     UndoRedo  undoRedo = new UndoRedo();
     
@@ -213,11 +213,11 @@ public class StylingController {
         }
     }
 
-     class InsertPicture implements ActionListener {
-         JMenuItem insertPictureButton;
-         public InsertPicture() {
-             insertPictureButton = new JMenuItem("Insert Picture");
-             insertPictureButton.addActionListener(this);
+     class AddPicture implements ActionListener {
+         JMenuItem addPictureButton;
+         public AddPicture() {
+             addPictureButton = new JMenuItem("Add Picture");
+             addPictureButton.addActionListener(this);
          }
 
          @Override
